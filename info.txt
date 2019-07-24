@@ -1,0 +1,4 @@
+I've created this calculator just for improving my coding skills,
+in particular the creation of graphics interfaces in Java language.
+The code of the program has been uploaded in my personal GitHub page,
+that can be visited by perssing the GitHub field from the menu.

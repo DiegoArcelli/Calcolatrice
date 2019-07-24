@@ -1,0 +1,9 @@
+How to use the calculator:
+- Use the buttons that rappresent number to compose the number inside the text box
+- You can insert a decimal number by pressing the . button
+- You can delete the last digit of the number by pressing the C button
+- You can delete the whole number by pressig CA button
+- After you composed the number you can select an operation
+- Sqare root operation requires only one operand to be performed
+- If you select plus, minus, product, division or power operation you must insert
+  a second operand and then press the = button

@@ -7,6 +7,10 @@ package calcolatrice;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
+import java.net.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 /**
@@ -20,15 +24,29 @@ public class Finestra extends JFrame implements ActionListener {
     double num;
     char op;
     boolean dot;
+    JMenuItem howto;
+    JMenuItem inform;
+    JMenuItem url;
     
     public Finestra(String title){
         super(title);
         dot = false;
+        url = new JMenuItem("GitHub");
+        url.addActionListener(this);
         JMenuBar barramenu = new JMenuBar();
         JMenu aiuto = new JMenu("Help");
         JMenu info = new JMenu("Info");
         barramenu.add(aiuto);
         barramenu.add(info);
+        howto = new JMenuItem("How to use");
+        howto.addActionListener(this);
+        aiuto.add(howto);
+        inform = new JMenuItem("Information");
+        inform.addActionListener(this);
+        info.add(inform);
+        url = new JMenuItem("GitHub");
+        url.addActionListener(this);
+        info.add(url);
         JPanel tastiera = new JPanel();
         JPanel schermo = new JPanel();
         tastiera.setLayout(new GridLayout(5,4,10,10));
@@ -116,11 +134,16 @@ public class Finestra extends JFrame implements ActionListener {
                     op=ae.getActionCommand().charAt(0);
                     testo.setText("0.0");
                     dot=false;
+                    tasti[3].setEnabled(false);
+                    tasti[7].setEnabled(false);
+                    tasti[11].setEnabled(false);
+                    tasti[15].setEnabled(false);
+                    tasti[17].setEnabled(false);
                 } else if(ae.getActionCommand().equals("CA")){
                     testo.setText("0.0");
                 } else if(ae.getActionCommand().equals("√")) {
-                    num=Math.sqrt(Double.parseDouble(testo.getText()));
-                    testo.setText(Double.toString(num));
+                    //num=Math.sqrt(Double.parseDouble(testo.getText()));
+                    testo.setText(Double.toString(Math.sqrt(Double.parseDouble(testo.getText()))));
                 } else if(ae.getActionCommand().equals(".")){
                     dot=true;
                     String[] parts = testo.getText().split("\\.");
@@ -137,12 +160,52 @@ public class Finestra extends JFrame implements ActionListener {
                     } else if(op=='^'){
                         num=Math.pow(num,Double.parseDouble(testo.getText()));
                     }
+                    tasti[3].setEnabled(true);
+                    tasti[7].setEnabled(true);
+                    tasti[11].setEnabled(true);
+                    tasti[15].setEnabled(true);
+                    tasti[17].setEnabled(true);
                     dot=false;
                     testo.setText(Double.toString(num));
                 }
             }
         }
-
+        
+        if(ae.getSource() instanceof JMenuItem){
+            if(ae.getSource() == howto){
+                String msg = readFile("howto.txt");
+                JOptionPane.showMessageDialog(this,msg,"How to use the calulator",JOptionPane.INFORMATION_MESSAGE);
+            } else if(ae.getSource() == inform){
+                String msg = readFile("info.txt");
+                JOptionPane.showMessageDialog(this,msg,"Information",JOptionPane.INFORMATION_MESSAGE);
+            } else if(ae.getSource() == url){
+                try {
+                    Desktop.getDesktop().browse(new URI("https://github.com/DiegoArcelli/Calcolatrice"));
+                } catch (URISyntaxException ex) {
+                    Logger.getLogger(Finestra.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(Finestra.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        
     }
+    
+    public String readFile(String nome){
+        String msg = "";
+        try(FileInputStream fis = new FileInputStream(nome)){
+            String scan;
+            while(fis.available()>0){
+                msg+=((char) fis.read());
+            }
+        } catch(FileNotFoundException ex){
+            System.err.println("File non trovato");
+        } catch(IOException ex){
+            System.err.println("Errore");
+        } finally {
+            return msg;
+        }
+    }
+
     
 }
