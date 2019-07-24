@@ -1,2 +1,2 @@
-# Calcolatrice
-Una semplice calcolatrice realizzata in Java.
+# Calculator
+A simple graphical calculator realized in Java.
